@@ -1,0 +1,30 @@
+{
+    "id": "1.19.4-forge-example",
+    "minecraftVersion": "1.19.4",
+    "forgeVersion": "45.0.43",
+    "type": "vanilla-client-forge",
+    "mainClass": "net.minecraft.client.main.Main",
+    "releaseTime": "2023-03-14T12:00:00Z",
+    "downloadUrls": {
+        "minecraft": "https://piston-data.mojang.com/v1/objects/45d5a695d702334963573660570b5993683a3f65/client.jar",
+        "forge": "https://maven.minecraftforge.net/net/minecraftforge/forge/1.19.4-45.0.43/forge-1.19.4-45.0.43-installer.jar",
+        "libraries": []
+    },
+    "sha256": "45d5a695d702334963573660570b5993683a3f65",
+    "size": 123456,
+    "assetIndex": {
+        "id": "1.19",
+        "sha1": "d4564b73b0638575026210c43336f78819582236",
+        "size": 123456,
+        "url": "https://piston-meta.mojang.com/v1/packages/d4564b73b0638575026210c43336f78819582236/1.19.4.json",
+        "totalSize": 123456789
+    },
+    "arguments": {
+        "game": [
+            "--demo"
+        ],
+        "jvm": [
+            "-Dtest=true"
+        ]
+    }
+}

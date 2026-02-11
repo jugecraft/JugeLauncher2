@@ -1,0 +1,24 @@
+# Rust
+/target/
+**/*.rs.bk
+
+# Node/Frontend
+node_modules/
+dist/
+.DS_Store
+
+# Tauri
+src-tauri/target/
+src-tauri/gen/
+
+# VS Code
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# App Data
+app_data/
+profiles.json
+installed_mods.json
