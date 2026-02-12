@@ -1,0 +1,14 @@
+{
+  "id": "1.8.9",
+  "type": "release",
+  "mainClass": "net.minecraft.client.main.Main",
+  "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_dir} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userType ${user_type} --versionType ${version_type}",
+  "libraries": [],
+  "downloads": {
+    "client": {
+      "sha1": "3870888a6c3d349d3771a3e9d16c9bf5e076b908",
+      "size": 8461484,
+      "url": "https://raw.githubusercontent.com/jugecraft/JugeLauncher2/main/versions/1.8.9/client.jar"
+    }
+  }
+}
