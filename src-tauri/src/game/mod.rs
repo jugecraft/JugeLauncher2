@@ -59,3 +59,4 @@ impl GameManager {
         let manifest: Manifest = serde_json::from_str(&content).map_err(|e| e.to_string())?;
         Ok(manifest)
     }
+}

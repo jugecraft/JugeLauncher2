@@ -1,0 +1,27 @@
+{
+    "id": "1.20.1-Forge",
+    "type": "release",
+    "mainClass": "net.minecraft.client.main.Main",
+    "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_dir} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userType ${user_type} --versionType ${version_type}",
+    "libraries": [
+        {
+            "name": "com.mojang:patchy:2.1.6",
+            "url": "https://libraries.minecraft.net/com/mojang/patchy/2.1.6/patchy-2.1.6.jar",
+            "sha1": "93693fb1849f8747f3b60942502c3c6f9e2b1b36",
+            "size": 25305
+        }
+    ],
+    "assetIndex": {
+        "id": "1.20",
+        "sha1": "44365b21cf57c469f2e3a89078b6711c97a5c88c",
+        "size": 427220,
+        "url": "https://launchermeta.mojang.com/v1/packages/44365b21cf57c469f2e3a89078b6711c97a5c88c/1.20.json"
+    },
+    "downloads": {
+        "client": {
+            "sha1": "7f093a8d13264c781036f04351660991c7847bc1",
+            "size": 26978546,
+            "url": "https://piston-data.mojang.com/v1/objects/7f093a8d13264c781036f04351660991c7847bc1/client.jar"
+        }
+    }
+}

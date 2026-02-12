@@ -204,7 +204,8 @@ pub fn run() {
             delete_profile,
             get_mods,
             toggle_mod,
-            get_java_runtimes
+            get_java_runtimes,
+            install_java
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

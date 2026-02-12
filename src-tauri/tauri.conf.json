@@ -12,7 +12,7 @@
   "plugins": {
     "updater": {
       "endpoints": [
-        "https://releases.jugelauncher.com/latest.json"
+        "https://jugecraft.github.io/JugeLauncher2/latest.json"
       ],
       "dialog": true,
       "pubkey": "DW/MzP4...PLACEHOLDER_PUBKEY.../8="

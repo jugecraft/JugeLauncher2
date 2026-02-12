@@ -23,7 +23,7 @@ function App() {
     setStatus(`Installing version for ${activeProfile.name}...`);
     setLoading(true);
     try {
-      const msg = await invoke('install_game', { manifestUrl: "http://localhost:8000/manifest.json" });
+      const msg = await invoke('install_game', { manifestUrl: "https://raw.githubusercontent.com/jugecraft/JugeLauncher2/main/versions/manifest.json" });
       setStatus(msg as string);
     } catch (e: any) { setStatus(`Error: ${e}`); }
     finally { setLoading(false); }

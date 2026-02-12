@@ -20,6 +20,19 @@ The ultimate, production-ready Minecraft Launcher built with **Tauri (Rust)** an
 - [Addons & Mods](docs/ADDONS_SYSTEM.md)
 - [JugeClient API](docs/API_LAUNCHER_CLIENT.md)
 - [Release Guide](docs/RELEASE_GUIDE.md)
+
+## Hosting Game Versions on GitHub
+
+You can host your Minecraft versions and modpacks directly on GitHub without a custom server:
+
+1.  **Manifest**: Upload your `manifest.json` to a folder like `/versions/` in your repository.
+2.  **URLs**: In the `manifest.json`, use the "Raw" URL for files (e.g., `https://raw.githubusercontent.com/.../file.jar`).
+3.  **Large Files**: For files larger than 100MB, use **GitHub Releases** and put the download link in the manifest.
+
+The launcher is pre-configured to look at:
+`https://raw.githubusercontent.com/jugecraft/JugeLauncher2/main/versions/manifest.json`
+
+## Development Setup
 - **Version Management**: Automated download of Vanilla, Forge, and Libraries using a custom manifest system.
 - **Security**: SHA256 integrity checks for all downloads.
 - **Performance**: High-performance Rust backend for launching and monitoring the game.
