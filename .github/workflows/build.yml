@@ -2,8 +2,8 @@ name: "publish"
 
 on:
   push:
-    branches:
-      - release
+    tags:
+      - 'v*'
 
 jobs:
   publish-tauri:
@@ -44,5 +44,113 @@ jobs:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: "App v__VERSION__"
           releaseBody: "See the assets to download this version and install."
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
+          args: --target ${{ matrix.platform }}
+
+  publish-latest-json:
+    needs: publish-tauri
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate latest.json
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Get the tag that triggered this workflow
+            const tagName = context.ref.replace('refs/tags/', '');
+            const version = tagName.replace('v', '');
+            
+            console.log(`Generating latest.json for ${tagName}`);
+
+            // Get the release associated with this tag
+            const releases = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const release = releases.data.find(r => r.tag_name === tagName);
+            
+            if (!release) {
+              core.setFailed(`Release not found for tag ${tagName}`);
+              return;
+            }
+
+            const platforms = {};
+            
+            // Helper to match signatures to assets
+            // Tauri v1/v2 naming conventions: 
+            // Windows: .msi.zip or .exe + .sig
+            // Linux: .AppImage.tar.gz or .AppImage + .sig
+            // MacOS: .app.tar.gz + .sig
+            
+            const assets = release.assets;
+            
+            for (const asset of assets) {
+              if (asset.name.endsWith('.sig')) {
+                const binaryName = asset.name.replace('.sig', '');
+                const binaryAsset = assets.find(a => a.name === binaryName);
+                
+                if (binaryAsset) {
+                  // Determine platform from name (heuristic)
+                  let platformKey = null;
+                  if (binaryName.includes('.exe') || binaryName.includes('.msi')) {
+                    platformKey = 'windows-x86_64';
+                  } else if (binaryName.includes('.AppImage') || binaryName.includes('.deb')) {
+                    platformKey = 'linux-x86_64';
+                  } else if (binaryName.includes('.app') || binaryName.includes('.dmg')) {
+                     // Check if it's apple silicon or intel? default to universal or check name
+                     // simpler assumption for now:
+                     platformKey = 'darwin-x86_64'; 
+                     if (binaryName.includes('aarch64')) platformKey = 'darwin-aarch64';
+                  }
+                  
+                  if (platformKey) {
+                    // Fetch signature content? 
+                    // No, tauri updater needs the signature STRING content in the json, NOT a link to .sig file.
+                    // This is critical. failed `latest.json` usually happens because people link to .sig file.
+                    // We must download the .sig file content.
+                    
+                    const sigResponse = await github.rest.repos.getReleaseAsset({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      asset_id: asset.id,
+                      headers: { accept: 'application/octet-stream' }
+                    });
+                    
+                    // The response.data is an ArrayBuffer in this context usually?
+                    // actions/github-script uses octokit. 
+                    // Let's decode it.
+                    const signature = new TextDecoder().decode(sigResponse.data);
+
+                    platforms[platformKey] = {
+                      signature: signature.trim(),
+                      url: binaryAsset.browser_download_url
+                    };
+                  }
+                }
+              }
+            }
+            
+            const latestJson = {
+              version: version,
+              notes: release.body,
+              pub_date: release.published_at,
+              platforms: platforms
+            };
+            
+            fs.writeFileSync('latest.json', JSON.stringify(latestJson, null, 2));
+            console.log('latest.json generated:', JSON.stringify(latestJson, null, 2));
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
+          keep_files: true
+          include: "latest.json"
+          exclude_assets: "**/*"
