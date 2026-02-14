@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::path::{Path, PathBuf};
 use std::fs;
+use std::path::PathBuf;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -62,7 +62,8 @@ impl ProfileManager {
         if !path.exists() {
             // Create default if not exists
             let default_profile = Profile::default();
-            self.profiles.insert(default_profile.id.clone(), default_profile);
+            self.profiles
+                .insert(default_profile.id.clone(), default_profile);
             return self.save();
         }
 
@@ -97,12 +98,12 @@ impl ProfileManager {
             Err("Profile not found".to_string())
         }
     }
-    
+
     pub fn delete_profile(&mut self, id: &str) -> Result<(), String> {
         self.profiles.remove(id);
         self.save()
     }
-    
+
     pub fn list_profiles(&self) -> Vec<Profile> {
         let mut list: Vec<Profile> = self.profiles.values().cloned().collect();
         list.sort_by_key(|p| p.created_at);

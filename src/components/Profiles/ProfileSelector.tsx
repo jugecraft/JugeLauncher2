@@ -1,111 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { invoke } from '@tauri-apps/api/core';
-import { ChevronDown, Settings, Plus } from 'lucide-react';
-import { ProfileEditor } from './ProfileEditor';
-
-interface Profile {
-    id: string;
-    name: string;
-    version_id: string;
-    min_memory: number;
-    max_memory: number;
-    width: number;
-    height: number;
-    java_path?: string;
-    java_args: string;
-    enabled_mods: string[];
-}
+import React, { useState, useEffect, useRef } from 'react';
+import clsx from 'clsx';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface ProfileSelectorProps {
-    onSelect: (profile: Profile) => void;
+    onSelect: (profile: any) => void;
+    localVersions: any[];
 }
 
-export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ onSelect }) => {
-    const [profiles, setProfiles] = useState<Profile[]>([]);
+export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ onSelect, localVersions }) => {
+    const { t } = useLanguage();
     const [selectedId, setSelectedId] = useState<string>('');
-    const [isEditorOpen, setIsEditorOpen] = useState(false);
-    const [editingProfile, setEditingProfile] = useState<Profile | null>(null);
+    const hasInitialized = useRef(false);
 
-    const fetchProfiles = async () => {
-        try {
-            const list = await invoke<Profile[]>('get_profiles');
-            setProfiles(list);
-            if (list.length > 0 && !selectedId) {
-                setSelectedId(list[0].id);
-                onSelect(list[0]);
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
+    // Initial setup: pick the first available version
     useEffect(() => {
-        fetchProfiles();
-    }, []);
+        if (localVersions.length > 0 && !hasInitialized.current) {
+            const first = localVersions[0];
+            const id = `local-${first.id}`;
+            setSelectedId(id);
+            onSelect({ name: first.id.toUpperCase(), version_id: first.id, id: 'local' });
+            hasInitialized.current = true;
+        }
+    }, [localVersions, onSelect]);
 
-    const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const id = e.target.value;
+    const handleVersionClick = (v: any) => {
+        const id = `local-${v.id}`;
         setSelectedId(id);
-        const p = profiles.find(x => x.id === id);
-        if (p) onSelect(p);
-    };
-
-    const handleEdit = () => {
-        const p = profiles.find(x => x.id === selectedId);
-        setEditingProfile(p || null);
-        setIsEditorOpen(true);
-    };
-
-    const handleCreate = () => {
-        setEditingProfile(null);
-        setIsEditorOpen(true);
-    };
-
-    const handleSave = () => {
-        setIsEditorOpen(false);
-        fetchProfiles();
+        onSelect({ name: v.id.toUpperCase(), version_id: v.id, id: 'local' });
     };
 
     return (
-        <>
-            <div className="flex items-center gap-2">
-                <div className="relative group">
-                    <select
-                        value={selectedId}
-                        onChange={handleSelect}
-                        className="appearance-none bg-white/5 border border-white/10 hover:bg-white/10 text-white pl-4 pr-10 py-2 rounded-lg cursor-pointer focus:outline-none focus:ring-1 focus:ring-indigo-500 min-w-[200px]"
-                    >
-                        {profiles.map(p => (
-                            <option key={p.id} value={p.id} className="bg-gray-900">{p.name} ({p.version_id})</option>
-                        ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+        <div className="flex items-center gap-2 p-1 bg-black/20 rounded-2xl border border-white/5 max-w-[500px] overflow-x-auto custom-scrollbar">
+            {localVersions.length === 0 ? (
+                <div className="px-4 py-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                    {t('profiles.no_versions')}
                 </div>
-
-                <button
-                    onClick={handleEdit}
-                    className="p-2 text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg transition-colors"
-                    title="Edit Profile"
-                >
-                    <Settings className="w-4 h-4" />
-                </button>
-
-                <button
-                    onClick={handleCreate}
-                    className="p-2 text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-lg transition-colors"
-                    title="Create New Profile"
-                >
-                    <Plus className="w-4 h-4" />
-                </button>
-            </div>
-
-            {isEditorOpen && (
-                <ProfileEditor
-                    profile={editingProfile}
-                    onClose={() => setIsEditorOpen(false)}
-                    onSave={handleSave}
-                />
+            ) : (
+                localVersions.map(v => {
+                    const isSelected = selectedId === `local-${v.id}`;
+                    return (
+                        <button
+                            key={v.id}
+                            onClick={() => handleVersionClick(v)}
+                            className={clsx(
+                                "flex-shrink-0 px-4 py-2 rounded-xl transition-all duration-300 flex items-center gap-2 border outline-none",
+                                isSelected
+                                    ? "bg-accent-primary text-white border-accent-primary shadow-[0_0_20px_rgba(99,102,241,0.3)]"
+                                    : "bg-white/5 text-gray-400 border-transparent hover:bg-white/10 hover:text-white"
+                            )}
+                        >
+                            <span className="text-xs font-black tracking-tight">{v.id}</span>
+                            {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
+                        </button>
+                    );
+                })
             )}
-        </>
+        </div>
     );
 };

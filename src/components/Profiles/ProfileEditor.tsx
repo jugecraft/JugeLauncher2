@@ -31,10 +31,14 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ profile, onClose, 
         java_args: '-XX:+UseG1GC',
     });
 
+    const [javaRuntimes, setJavaRuntimes] = useState<any[]>([]);
+
     useEffect(() => {
         if (profile) {
             setFormData(profile);
         }
+        // Fetch java runtimes
+        invoke<any[]>('get_java_runtimes').then(setJavaRuntimes).catch(console.error);
     }, [profile]);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -93,26 +97,40 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ profile, onClose, 
 
                         <div className="col-span-1">
                             <label className="block text-sm font-medium text-gray-400 mb-1">Version</label>
-                            <select
-                                value={formData.version_id}
-                                onChange={e => setFormData({ ...formData, version_id: e.target.value })}
-                                className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-white focus:border-indigo-500 outline-none appearance-none"
-                            >
-                                <option value="1.19.4">1.19.4</option>
-                                <option value="1.20.1">1.20.1</option>
-                                <option value="1.8.9">1.8.9</option>
-                            </select>
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    list="versions-list"
+                                    value={formData.version_id}
+                                    onChange={e => setFormData({ ...formData, version_id: e.target.value })}
+                                    className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-white focus:border-indigo-500 outline-none"
+                                    placeholder="e.g. 1.19.4"
+                                />
+                                <datalist id="versions-list">
+                                    <option value="1.20.1" />
+                                    <option value="1.19.4" />
+                                    <option value="1.18.2" />
+                                    <option value="1.12.2" />
+                                    <option value="1.8.9" />
+                                </datalist>
+                            </div>
                         </div>
 
                         <div className="col-span-1">
-                            <label className="block text-sm font-medium text-gray-400 mb-1">Java Version</label>
+                            <label className="block text-sm font-medium text-gray-400 mb-1">Java Path</label>
                             <input
                                 type="text"
-                                placeholder="Auto-detect"
+                                list="java-list"
+                                placeholder="Auto-detect (Recommended)"
                                 value={formData.java_path || ''}
                                 onChange={e => setFormData({ ...formData, java_path: e.target.value })}
                                 className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-white focus:border-indigo-500 outline-none"
                             />
+                            <datalist id="java-list">
+                                {javaRuntimes.map((java, i) => (
+                                    <option key={i} value={java.path}>{java.version} ({java.architecture})</option>
+                                ))}
+                            </datalist>
                         </div>
                     </div>
 

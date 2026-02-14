@@ -52,8 +52,19 @@ pub enum VersionType {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DownloadUrls {
-    pub minecraft: String, // URL to client.jar
+    pub minecraft: String,     // URL to client.jar
     pub forge: Option<String>, // URL to forge-installer or universal
     #[serde(default)]
     pub libraries: Vec<String>, // URLs to libraries
+}
+
+#[derive(Debug, Deserialize)]
+pub struct AssetIndexContent {
+    pub objects: std::collections::HashMap<String, AssetObject>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct AssetObject {
+    pub hash: String,
+    pub size: u64,
 }

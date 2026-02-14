@@ -1,0 +1,526 @@
+﻿cargo :    Compiling 
+tauri-app v0.1.0 (D:\J
+ugeLauncher\src-tauri)
+En línea: 1 Carácter: 
+116
++ ... 44.35207\bin\Hos
+tx64\x64"; cargo 
+build --offline > 
+build_log.txt 2>&1
++                     
+           ~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (   Compili   
+ ng ta...cher\src-    
+tauri):String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+error: cannot find 
+macro `__cmd__login_of
+fline` in this scope
+   --> 
+src\lib.rs:206:13
+    |
+206 |             
+login_offline,
+    |             
+^^^^^^^^^^^^^
+
+error[E0433]: failed 
+to resolve: could not 
+find `launcher` in 
+`game`
+  --> src\lib.rs:76:25
+   |
+76 |     let options 
+= game::launcher::Laun
+chOptions {
+   |                  
+       ^^^^^^^^ could 
+not find `launcher` 
+in `game`
+
+error[E0433]: failed 
+to resolve: could not 
+find `launcher` in 
+`game`
+  --> src\lib.rs:96:18
+   |
+96 |     crate::game::
+launcher::launch_game(
+&app_dir, &manifest, 
+&account, &options)?;
+   |                  
+^^^^^^^^ could not 
+find `launcher` in 
+`game`
+
+warning: unused 
+import: `Serialize`
+ --> src\auth\microsof
+t.rs:1:26
+  |
+1 | use 
+serde::{Deserialize, 
+Serialize};
+  |                   
+       ^^^^^^^^^
+  |
+  = note: `#[warn(unus
+ed_imports)]` (part 
+of `#[warn(unused)]`) 
+on by default
+
+warning: unused 
+import: 
+`std::time::Duration`
+ --> src\auth\microsof
+t.rs:3:5
+  |
+3 | use 
+std::time::Duration;
+  |     
+^^^^^^^^^^^^^^^^^^^
+
+warning: unused 
+import: 
+`tokio::time::sleep`
+ --> src\auth\microsof
+t.rs:4:5
+  |
+4 | use 
+tokio::time::sleep;
+  |     
+^^^^^^^^^^^^^^^^^^
+
+warning: unused 
+import: `Path`
+ --> src\profiles\mod.
+rs:3:17
+  |
+3 | use 
+std::path::{Path, 
+PathBuf};
+  |                 
+^^^^
+
+warning: unused 
+import: `Path`
+ --> 
+src\mods\mod.rs:2:17
+  |
+2 | use 
+std::path::{Path, 
+PathBuf};
+  |                 
+^^^^
+
+warning: unused 
+import: `Sha256`
+ --> 
+src\mods\mod.rs:4:12
+  |
+4 | use 
+sha2::{Sha256, 
+Digest};
+  |            ^^^^^^
+
+warning: unused 
+import: `std::io`
+ --> 
+src\mods\mod.rs:5:5
+  |
+5 | use std::io;
+  |     ^^^^^^^
+
+error[E0596]: cannot 
+borrow `res` as 
+mutable, as it is not 
+declared as mutable
+  --> src\game\downloa
+der.rs:30:29
+   |
+30 |     while let 
+Some(chunk) = res.chun
+k().await.map_err(|e| 
+e.to_string())? {
+   |                  
+           ^^^ cannot 
+borrow as mutable
+   |
+help: consider 
+changing this to be 
+mutable
+   |
+23 |     let mut res 
+= client.get(url).send
+().await.map_err(|e| 
+e.to_string())?;
+   |         +++
+
+error[E0599]: no 
+method named 
+`map_err` found for 
+opaque type `impl 
+warp::Future<Output = 
+Result<game::manifest:
+:Manifest, std::string
+::String>>` in the 
+current scope
+   --> 
+src\lib.rs:58:61
+    |
+ 58 |     let 
+manifest = game_manage
+r.load_manifest(&manif
+est_id).map_err(|e| 
+e.to_string())?;
+    |                 
+                      
+                      
+^^^^^^^ method not 
+found in `impl 
+warp::Future<Output = 
+Result<game::manifest:
+:Manifest, 
+std::string::String>>`
+    |
+   ::: C:\Users\Usuari
+o\.cargo\registry\src\
+index.crates.io-1949cf
+8c6b5b557f\futures-uti
+l-0.3.31\src\future\tr
+y_future\mod.rs:308:8
+    |
+308 |     fn 
+map_err<E, F>(self, 
+f: F) -> MapErr<Self, 
+F>
+    |        ------- 
+the method is 
+available for `impl 
+warp::Future<Output = 
+Result<game::manifest:
+:Manifest, std::string
+::String>>` here
+    |
+    = help: items 
+from traits can only 
+be used if the trait 
+is in scope
+help: consider 
+`await`ing on the 
+`Future` and calling 
+the method on its 
+`Output`
+    |
+ 58 |     let 
+manifest = game_manage
+r.load_manifest(&manif
+est_id).await.map_err(
+|e| e.to_string())?;
+    |                 
+                      
+                      
+++++++
+help: trait 
+`TryFutureExt` which 
+provides `map_err` is 
+implemented but not 
+in scope; perhaps you 
+want to import it
+    |
+  1 + use futures_util
+::future::try_future::
+TryFutureExt;
+    |
+
+error[E0282]: type 
+annotations needed
+  --> src\lib.rs:58:70
+   |
+58 |     let manifest 
+= game_manager.load_ma
+nifest(&manifest_id).m
+ap_err(|e| 
+e.to_string())?;
+   |                  
+                      
+                      
+        ^  - type 
+must be known at this 
+point
+   |
+help: consider giving 
+this closure 
+parameter an explicit 
+type
+   |
+58 |     let manifest 
+= game_manager.load_ma
+nifest(&manifest_id).m
+ap_err(|e: /* Type 
+*/| e.to_string())?;
+   |                  
+                      
+                      
+         ++++++++++++
+
+error[E0599]: no 
+function or 
+associated item named 
+`new_v3` found for 
+struct `Uuid` in the 
+current scope
+   --> 
+src\auth\mod.rs:28:32
+    |
+ 28 |         let 
+uuid = uuid::Uuid::new
+_v3(&uuid::Uuid::NAMES
+PACE_DNS, 
+name.as_bytes());
+    |                 
+               ^^^^^^ 
+function or 
+associated item not 
+found in `Uuid`
+    |
+note: if you're 
+trying to build a new 
+`Uuid` consider using 
+one of the following 
+associated functions:
+      
+uuid::builder::<impl 
+Uuid>::nil
+      
+uuid::builder::<impl 
+Uuid>::max
+      
+uuid::builder::<impl 
+Uuid>::from_fields
+      
+uuid::builder::<impl 
+Uuid>::from_fields_le
+      and 11 others
+   --> C:\Users\Usuari
+o\.cargo\registry\src\
+index.crates.io-1949cf
+8c6b5b557f\uuid-1.20.0
+\src\builder.rs:72:5
+    |
+ 72 |     pub const 
+fn nil() -> Self {
+    |     ^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+...
+ 98 |     pub const 
+fn max() -> Self {
+    |     ^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+...
+122 |     pub const 
+fn from_fields(d1: 
+u32, d2: u16, d3: 
+u16, d4: &[u8; 8]) -> 
+Uuid {
+    |     ^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
+...
+168 |     pub const 
+fn from_fields_le(d1: 
+u32, d2: u16, d3: 
+u16, d4: &[u8; 8]) -> 
+Uuid {
+    |     ^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+help: there is an 
+associated function 
+`new_v4` with a 
+similar name
+   --> C:\Users\Usuari
+o\.cargo\registry\src\
+index.crates.io-1949cf
+8c6b5b557f\uuid-1.20.0
+\src\v4.rs:33:5
+    |
+ 33 |     pub fn 
+new_v4() -> Uuid {
+    |     ^^^^^^^^^^^^
+^^^^^^^^^^^
+
+error[E0308]: 
+mismatched types
+   --> 
+src\lib.rs:171:12
+    |
+171 |     if let 
+Ok(app_data) = directo
+ries::ProjectDirs::fro
+m("com", 
+"jugelauncher", 
+"app") {
+    |            
+^^^^^^^^^^^^   -------
+----------------------
+----------------------
+--------- this 
+expression has type `s
+td::option::Option<Pro
+jectDirs>`
+    |            |
+    |            
+expected `Option<Proje
+ctDirs>`, found 
+`Result<_, _>`
+    |
+    = note: expected 
+enum `std::option::Opt
+ion<ProjectDirs>`
+               found 
+enum `Result<_, _>`
+
+error[E0599]: the 
+method `async_kind` 
+exists for reference 
+`&impl 
+warp::Future<Output = 
+Result<DeviceCodeRespo
+nse, std::string::Stri
+ng>>`, but its trait 
+bounds were not 
+satisfied
+   --> src\lib.rs:16:1
+    |
+ 16 |   
+#[tauri::command]
+    |   
+^^^^^^^^^^^^^^^^^ 
+method cannot be 
+called due to 
+unsatisfied trait 
+bounds
+...
+203 |           .invok
+e_handler(tauri::gener
+ate_handler![
+    |  _______________
+__________-
+204 | |             
+start_ms_auth,
+205 | |             
+complete_ms_auth,
+206 | |             
+login_offline,
+...   |
+216 | |             
+install_java
+217 | |         ])
+    | |_________- in 
+this macro invocation
+    |
+    = note: the 
+following trait 
+bounds were not 
+satisfied:
+            `impl 
+warp::Future<Output = 
+Result<DeviceCodeRespo
+nse, std::string::Stri
+ng>>: IpcResponse`
+            which is 
+required by `&impl 
+warp::Future<Output = 
+Result<DeviceCodeRespo
+nse, std::string::Stri
+ng>>: tauri::ipc::priv
+ate::ResponseKind`
+            `<&impl 
+warp::Future<Output = 
+Result<DeviceCodeRespo
+nse, 
+std::string::String>> 
+as 
+warp::Future>::Output 
+= Result<_, _>`
+            which is 
+required by `&impl 
+warp::Future<Output = 
+Result<DeviceCodeRespo
+nse, std::string::Stri
+ng>>: tauri::ipc::priv
+ate::ResultFutureKind`
+            `&impl 
+warp::Future<Output = 
+Result<DeviceCodeRespo
+nse, std::string::Stri
+ng>>: warp::Future`
+            which is 
+required by `&impl 
+warp::Future<Output = 
+Result<DeviceCodeRespo
+nse, std::string::Stri
+ng>>: tauri::ipc::priv
+ate::ResultFutureKind`
+    = note: this 
+error originates in 
+the macro `__cmd__star
+t_ms_auth` which 
+comes from the 
+expansion of the 
+macro `tauri::generate
+_handler` (in Nightly 
+builds, run with -Z 
+macro-backtrace for 
+more info)
+
+warning: unused 
+import: `Write`
+ --> src\game\download
+er.rs:3:21
+  |
+3 | use 
+std::io::{self, 
+Write};
+  |                   
+  ^^^^^
+
+warning: unused 
+import: `Digest`
+ --> 
+src\mods\mod.rs:4:20
+  |
+4 | use 
+sha2::{Sha256, 
+Digest};
+  |                   
+ ^^^^^^
+
+Some errors have 
+detailed 
+explanations: E0282, 
+E0308, E0433, E0596, 
+E0599.
+For more information 
+about an error, try 
+`rustc --explain 
+E0282`.
+warning: `tauri-app` 
+(lib) generated 9 
+warnings
+error: could not 
+compile `tauri-app` 
+(lib) due to 9 
+previous errors; 9 
+warnings emitted

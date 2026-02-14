@@ -13,7 +13,7 @@ pub enum AccountType {
 pub struct Account {
     pub uuid: String,
     pub name: String,
-    pub access_token: Option<String>, // Minecraft Access Token
+    pub access_token: Option<String>,  // Minecraft Access Token
     pub refresh_token: Option<String>, // Microsoft Refresh Token
     pub account_type: AccountType,
     pub skin_url: Option<String>,
@@ -25,8 +25,8 @@ impl Account {
     pub fn new_offline(name: &str) -> Self {
         // Generate UUID based on name (v3/v5) or random for verification
         // For offline mode, usually name is enough, but UUID is needed for game arguments
-        let uuid = uuid::Uuid::new_v3(&uuid::Uuid::NAMESPACE_DNS, name.as_bytes());
-        
+        let uuid = uuid::Uuid::new_v4().to_string();
+
         Self {
             uuid: uuid.to_string(),
             name: name.to_string(),
