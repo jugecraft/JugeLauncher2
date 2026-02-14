@@ -1,4 +1,5 @@
-# Rust
+# Website
+website/
 /target/
 **/*.rs.bk
 
