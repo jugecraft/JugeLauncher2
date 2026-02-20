@@ -1,16 +1,33 @@
 # JugeLauncher v1.0.0
 
+El launcher de Minecraft definitivo, listo para producción, construido con **Tauri (Rust)** y **React**.
+
+[English Version Below](#english-version)
+
+## Características principales
+
+- **🛡️ Autenticación Segura**: Soporte para Microsoft (OAuth2) y modo Offline.
+- **🚀 Motor de Juego Avanzado**: Lanzamiento de alto rendimiento y baja latencia con verificación SHA256 de assets.
+- **📦 Gestor de Mods**: Activa/Desactiva mods por versión sin borrar archivos.
+- **⚙️ Sistema de Perfiles**: Crea perfiles ilimitados con argumentos de Java, resolución y memoria personalizados.
+- **☕ Auto-Java**: Detecta y usa automáticamente el runtime de Java correcto.
+- **🔄 Auto-Updater**: Actualizaciones en segundo plano sin interrupciones.
+- **🔌 Client API**: API WebSocket/REST local para integración con mods.
+
+## Código Abierto y Comunidad
+
+Este proyecto es ahora **Código Abierto (Open Source)**. ¡Agradecemos cualquier contribución!
+
+- **Licencia**: [MIT License](LICENSE)
+- **Cómo contribuir**: Consulta nuestra [Guía de Contribución](CONTRIBUIR.md)
+- **Código de Conducta**: Lee nuestro [Código de Conducta](CODIGO_DE_CONDUCTA.md) para mantener una comunidad sana.
+
+---
+
+<a name="english-version"></a>
+# English Version
+
 The ultimate, production-ready Minecraft Launcher built with **Tauri (Rust)** and **React**.
-
-## Features
-
-- **🛡️ Secure Authentication**: Microsoft (OAuth2) and Offline support.
-- **🚀 Advanced Game Engine**: High-performance, low-latency launching with SHA256 assets verification.
-- **📦 Mod Manager**: Enable/Disable mods per version without deleting files. (New in v1.0.0)
-- **⚙️ Profile System**: Create unlimited profiles with custom Java args, resolution, and memory settings. (New in v1.0.0)
-- **☕ Auto-Java**: Automatically detects and uses the correct Java runtime. (New in v1.0.0)
-- **🔄 Auto-Updater**: Seamless background updates. (New in v1.0.0)
-- **🔌 Client API**: Local WebSocket/REST API for mod integration. (New in v1.0.0)
 
 ## Documentation
 

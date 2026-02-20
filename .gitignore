@@ -23,3 +23,8 @@ logs/
 app_data/
 profiles.json
 installed_mods.json
+
+# Environment/Secrets
+.env
+.env.*
+*.local
